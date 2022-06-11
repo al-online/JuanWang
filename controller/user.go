@@ -137,12 +137,30 @@ func UserInfo(c *gin.Context) {
 			StatusMsg: err.Error()})
 		return
 	}
+	userID := claims.UserID
+	username := claims.Username
+	followCount, err := mysql.GetFollowCount(userID)
+	if err != nil {
+		c.JSON(501, Response{
+			StatusCode: 501,
+			StatusMsg:  err.Error(),
+		})
+		return
+	}
+	FollowerCount, err := mysql.GetFollowerCount(userID)
+	if err != nil {
+		c.JSON(501, Response{
+			StatusCode: 501,
+			StatusMsg:  err.Error(),
+		})
+		return
+	}
 	//创建实例
 	user := User{
-		Id:            claims.UserID,
-		Name:          claims.Username,
-		FollowCount:   23,
-		FollowerCount: 1000000,
+		Id:            userID,
+		Name:          username,
+		FollowCount:   followCount,
+		FollowerCount: FollowerCount,
 		IsFollow:      true,
 	}
 

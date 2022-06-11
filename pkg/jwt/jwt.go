@@ -3,7 +3,6 @@ package jwt
 import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/spf13/viper"
 	"time"
 )
 
@@ -34,9 +33,8 @@ func GenToken(userID int64, username string) (Token string, err error) {
 		userID,   // 自定义字段
 		username, // 自定义字段
 		jwt.StandardClaims{ // JWT规定的7个官方字段
-			ExpiresAt: time.Now().Add(
-				time.Duration(viper.GetInt("auth.jwt_expire")) * time.Hour).Unix(), // 过期时间
-			Issuer: "bluebell", // 签发人
+			ExpiresAt: int64(TokenExpireDuration), // 过期时间
+			Issuer:    "bluebell",                 // 签发人
 		},
 	}
 	// 加密并获得完整的编码后的字符串token

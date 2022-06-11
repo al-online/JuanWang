@@ -29,6 +29,20 @@ func CheckUserExist(username string) (error error) {
 	return nil
 }
 
+// CheckUserExistById 检验用户Id是否存在
+func CheckUserExistById(userId int64) (error error) {
+	user := &config.UserForm{}
+	res := Db.Where("user_id =?", userId).Find(&user)
+	//数据库查询失败
+	if res.Error != nil {
+		return res.Error
+	}
+	if res.RowsAffected > 0 {
+		return nil
+	}
+	return errors.New("the user does not exists")
+}
+
 // InsertUser 向数据库中插入数据
 func InsertUser(user config.UserForm) (int64, error) {
 	// 对密码进行加密
