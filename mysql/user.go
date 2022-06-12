@@ -72,3 +72,12 @@ func Login(username string, password string) (error, int64) {
 	}
 	return nil, user.UserId
 }
+
+func GetUserInfoById(userId int64) (error, config.UserForm) {
+	User := config.UserForm{}
+	res := Db.Where("user_id=?", userId).Find(&User)
+	if res.Error != nil {
+		return res.Error, config.UserForm{}
+	}
+	return nil, User
+}

@@ -170,3 +170,30 @@ func UserInfo(c *gin.Context) {
 		user,
 	})
 }
+
+func GetUserInfoById(userId int64, ToUserId int64) (error, User) {
+	err, user := mysql.GetUserInfoById(ToUserId)
+	if err != nil {
+		return err, User{}
+	}
+	followCount, err := mysql.GetFollowCount(ToUserId)
+	if err != nil {
+		return err, User{}
+	}
+	FollowerCount, err := mysql.GetFollowerCount(ToUserId)
+	if err != nil {
+		return err, User{}
+	}
+	err, IsFollow := mysql.IsFollow(userId, ToUserId)
+	if err != nil {
+		return err, User{}
+	}
+	User := User{
+		Id:            user.UserId,
+		Name:          user.Username,
+		FollowCount:   followCount,
+		FollowerCount: FollowerCount,
+		IsFollow:      IsFollow,
+	}
+	return nil, User
+}
