@@ -6,11 +6,6 @@ import (
 	"github.com/RaymondCode/simple-demo/pkg/snowflake"
 	"github.com/gin-gonic/gin"
 	"log"
-	"net/http"
-)
-
-var (
-	fileSystem http.Handler
 )
 
 func main() {
