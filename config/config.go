@@ -1,6 +1,8 @@
 package config
 
-import "time"
+import (
+	"time"
+)
 
 // UserForm 用户表单信息
 type UserForm struct {
@@ -36,4 +38,25 @@ type Video struct {
 
 func (Video) TableName() string {
 	return "t_video"
+}
+
+type Favorite struct {
+	UserId  int64    `json:"user_id" gorm:"primary_key"`
+	VideoId int64    `json:"video_id" gorm:"primary_key"`
+	User    UserForm `gorm:"foreignkey:UserId""`
+	Video   Video    `gorm:"foreignkey:VideoId"`
+}
+
+func (Favorite) TableName() string {
+	return "t_favorite"
+}
+
+type Comment struct {
+	Id        int64     `json:"id" gorm:"primary_key"`
+	UserId    int64     `json:"user_id" gorm:"primary_key"`
+	VideoId   int64     `json:"video_id" gorm:"primary_key"`
+	Content   string    `json:"content"`
+	User      UserForm  `gorm:"foreignkey:UserId""`
+	Video     Video     `gorm:"foreignkey:VideoId"`
+	CreatedAt time.Time `json:"created_at"`
 }

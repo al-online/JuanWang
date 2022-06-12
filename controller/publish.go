@@ -115,14 +115,29 @@ func PublishList(c *gin.Context) {
 	}
 	VideosList := []Video{}
 	for _, item := range videos {
+		err, isFavorite := mysql.IsFavorite(UserId, item.Id)
+		FavoriteCount, err := mysql.GetFavoriteCount(item.Id)
+		if err != nil {
+			c.JSON(200, Response{
+				StatusCode: 501,
+				StatusMsg:  err.Error(),
+			})
+		}
+		commentCount, err := mysql.GetCommentCount(item.Id)
+		if err != nil {
+			c.JSON(200, Response{
+				StatusCode: 501,
+				StatusMsg:  err.Error(),
+			})
+		}
 		video := Video{
 			Id:            item.Id,
 			Author:        User,
 			PlayUrl:       item.VideoUrl,
 			CoverUrl:      item.VideoCover,
-			FavoriteCount: 90909,
-			CommentCount:  20919,
-			IsFavorite:    false,
+			FavoriteCount: FavoriteCount,
+			CommentCount:  commentCount,
+			IsFavorite:    isFavorite,
 		}
 		VideosList = append(VideosList, video)
 	}

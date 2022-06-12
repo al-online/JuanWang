@@ -51,14 +51,28 @@ func Feed(c *gin.Context) {
 					StatusMsg:  err.Error(),
 				})
 			}
+			FavoriteCount, err := mysql.GetFavoriteCount(item.Id)
+			if err != nil {
+				c.JSON(200, Response{
+					StatusCode: 501,
+					StatusMsg:  err.Error(),
+				})
+			}
+			commentCount, err := mysql.GetCommentCount(item.Id)
+			if err != nil {
+				c.JSON(200, Response{
+					StatusCode: 501,
+					StatusMsg:  err.Error(),
+				})
+			}
 			video := Video{
 				Id:            item.Id,
 				Author:        User,
 				PlayUrl:       item.VideoUrl,
 				CoverUrl:      item.VideoCover,
-				FavoriteCount: 90909,
-				CommentCount:  20919,
-				IsFavorite:    false,
+				FavoriteCount: FavoriteCount,
+				CommentCount:  commentCount,
+				IsFavorite:    false, //未登录用户默认未点赞
 			}
 			VideosList = append(VideosList, video)
 		}
@@ -107,14 +121,29 @@ func Feed(c *gin.Context) {
 					StatusMsg:  err.Error(),
 				})
 			}
+			FavoriteCount, err := mysql.GetFavoriteCount(item.Id)
+			err, isFavorite := mysql.IsFavorite(item.UserId, item.Id)
+			if err != nil {
+				c.JSON(200, Response{
+					StatusCode: 501,
+					StatusMsg:  err.Error(),
+				})
+			}
+			commentCount, err := mysql.GetCommentCount(item.Id)
+			if err != nil {
+				c.JSON(200, Response{
+					StatusCode: 501,
+					StatusMsg:  err.Error(),
+				})
+			}
 			video := Video{
 				Id:            item.Id,
 				Author:        User,
 				PlayUrl:       item.VideoUrl,
 				CoverUrl:      item.VideoCover,
-				FavoriteCount: 90909,
-				CommentCount:  20919,
-				IsFavorite:    false,
+				FavoriteCount: FavoriteCount,
+				CommentCount:  commentCount,
+				IsFavorite:    isFavorite,
 			}
 			VideosList = append(VideosList, video)
 		}
