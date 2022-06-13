@@ -1,7 +1,23 @@
 # 抖声项目
 
-## 抖音项目服务端简单示例
 
-项目设计文档在：抖声项目设计文档
 
-项目运行视频测试在，mp4文件中
+### 项目作者
+
+​	[黄骏铭](https://github.com/onlinemz)
+
+​	
+
+### 项目技术栈
+
+- GIN
+- GORM
+- MySQL
+- ffmpeg
+- jwt
+
+
+
+- 项目设计文档地址：[设计文档](https://github.com/onlinemz/JuanWang/blob/main/抖声项目设计文档.md)
+
+- 项目演示视频：[演示demo视频下载](https://github.com/onlinemz/JuanWang/blob/main/演示视频demo.mp4)
